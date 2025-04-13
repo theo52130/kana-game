@@ -1,0 +1,40 @@
+# Image de base
+FROM node:23-alpine
+
+# Définition du répertoire de travail
+WORKDIR /app
+
+# Installation et configuration de pnpm avec le répertoire global bin
+ENV PNPM_HOME=/usr/local/bin
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Installation des dépendances globales
+RUN apk add --no-cache libc6-compat
+
+# Installation de nodemon globalement avec pnpm
+RUN pnpm add -g nodemon
+
+# Copie des fichiers de dépendances uniquement (sans node_modules)
+COPY package.json pnpm-lock.yaml ./
+
+# Installation des dépendances
+RUN pnpm install --frozen-lockfile
+
+# Copie du reste du code source
+COPY . .
+
+# Génération du client Prisma
+RUN pnpm prisma generate
+
+# Exposition du port
+EXPOSE 3000
+
+# Définition des variables d'environnement
+ENV NODE_ENV=development
+ENV PORT=3000
+
+# Commande de démarrage avec nodemon pour auto-restart
+# CMD ["nodemon", "--watch", ".", "--ext", "js,jsx,ts,tsx,json", "--ignore", "node_modules", "--ignore", ".next", "--exec", "pnpm", "run", "dev"]
+
+# CMD ["pnpm", "run", "dev"]
+CMD ["pnpm", "run", "dev:docker"]

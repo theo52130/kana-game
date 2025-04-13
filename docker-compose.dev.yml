@@ -1,69 +1,43 @@
 services:
-  next-app-kanagame-dev:
-    container_name: next-app-kanagame-dev
+  nextjs:
+    container_name: nextjs-kanami-dev
     build:
-      context: ./website
+      context: ./kanamigame-app
       dockerfile: Dockerfile.dev
-    volumes:
-      - ./website:/app
-      - /app/.next
-      - ./website/.env:/app/.env
     ports:
-      - "3300:3000"
+      - "3000:3000"
+    volumes:
+      - ./kanamigame-app:/app:cached
+      - /app/node_modules
     environment:
       - NODE_ENV=development
-      - WATCHPACK_POLLING=true
-      - CHOKIDAR_USEPOLLING=true
-      - HOSTNAME=0.0.0.0
-      - NEXT_PUBLIC_WEBSOCKET_HOSTNAME=localhost
-      - WDS_SOCKET_HOST=localhost
-      - NEXT_WEBPACK_USEPOLLING=1
-    command: npm run dev
-    networks:
-      - kanagame-networks-dev
+      - DATABASE_URL=postgresql://kanami:kanamipassword@postgresql:5432/kanami_dev_db?schema=public
+    # command: pnpm run dev
     depends_on:
-      postgres-kanagame-dev:
-        condition: service_healthy
-
-
-  # nginx-dev:
-  #   build:
-  #     context: ./nginx
-  #     dockerfile: Dockerfile.dev
-  #   container_name: nginx-dev
-  #   ports:
-  #     - "80:80"
-  #   depends_on:
-  #     - next-app-dev
-  #   networks:
-  #     - kanagame-networks-dev
-
-  postgres-kanagame-dev:
-    container_name: postgres-kanagame-dev
-    image: postgres:15
-    environment:
-      POSTGRES_PASSWORD: mdp_kanagame_db
-      POSTGRES_USER: kanagame_user_db
-      POSTGRES_DB: kanagame_db
-    volumes:
-      - postgres:/var/lib/postgresql/data
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    restart: unless-stopped
+      - postgresql
     networks:
-      - kanagame-networks-dev
-    # ports:
-    #   - "5433:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U kanagame_user_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
+      - kanami-dev-network
 
-volumes:
-  postgres:
-    # driver: local
+  postgresql:
+    container_name: postgresql-kanami-dev
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=kanami
+      - POSTGRES_PASSWORD=kanamipassword
+      - POSTGRES_DB=kanami_dev_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - kanami-dev-network
 
 networks:
-  kanagame-networks-dev:
-    driver: bridge
+  kanami-dev-network:
+      driver: bridge
+
+volumes:
+  postgres_data:
+    name: kanami-dev-postgres-data
+    driver: local
