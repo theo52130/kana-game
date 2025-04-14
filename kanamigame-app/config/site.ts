@@ -1,13 +1,13 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "KanamiGame",
-  description: "Un jeu interactif et amusant pour maîtriser les hiragana et katakana à votre rythme.",
+  mainNav: {
+    title: "KanamiGame",
+    titleKana: "カナミゲーム",
+    description: "Un jeu interactif et amusant pour maîtriser les hiragana et katakana à votre rythme.",
+    descriptionKana: "自分のペースでひらがなやカタカナをマスターできる、楽しいインタラクティブなゲームです。"
+  },
   navItems: [
-    {
-      label: "Home",
-      href: "/",
-    },
     {
       label: "test",
       href: "/test",
@@ -17,15 +17,12 @@ export const siteConfig = {
       href: "/bdd",
     },
     {
-      label: "Leaderboard",
-      href: "/leaderboard",
+      label: "learn",
+      href: "/learn",
     }
   ],
-  navMenuItems: [
-    {
-      label: "Home",
-      href: "/",
-    },
+  navItemsMobile: [
+
     {
       label: "test",
       href: "/test",

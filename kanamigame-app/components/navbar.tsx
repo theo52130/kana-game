@@ -11,12 +11,13 @@ import {
 } from "@heroui/navbar";
 import { Button } from "@heroui/button";
 import { Link } from "@heroui/link";
-import { Logo } from "@/components/icons";
+import { DiscordIcon, Logo, GithubIcon } from "@/components/icons";
 import NextLink from "next/link";
 import { useState } from "react";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
+import { KanaRomanjiSwitch } from "@/components/kana-romanji-switch";
 
 export const Navbar = () => {
   // Ajouter un état pour gérer l'ouverture/fermeture du menu
@@ -43,7 +44,9 @@ export const Navbar = () => {
             onClick={closeMenu}
           >
             {/* <Logo size={40} /> */}
-            <p className="font-bold text-secondary-600">{siteConfig.name}</p>
+            <p className="font-bold text-secondary-600">
+              {siteConfig.mainNav.title}
+            </p>
           </NextLink>
         </NavbarBrand>
       </NavbarContent>
@@ -65,6 +68,17 @@ export const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2">
+          <Link href="https://github.com/theo52130" isExternal className="p-1">
+            <GithubIcon className="cursor-pointer transition-opacity hover:opacity-80" />
+          </Link>
+          <Link
+            href="#"
+            // isExternal
+            className="p-1"
+          >
+            <DiscordIcon className="cursor-pointer transition-opacity hover:opacity-80" />
+          </Link>
+          <KanaRomanjiSwitch />
           <ThemeSwitch />
           <Button size="md" radius="full" color="secondary">
             LogIn
@@ -74,13 +88,24 @@ export const Navbar = () => {
 
       {/* Menu mobile */}
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
+        <Link href="https://github.com/theo52130" isExternal className="p-1">
+          <GithubIcon className="cursor-pointer transition-opacity hover:opacity-80" />
+        </Link>
+        <Link
+          href="#"
+          // isExternal
+          className="p-1"
+        >
+          <DiscordIcon className="cursor-pointer transition-opacity hover:opacity-80" />
+        </Link>
+        <KanaRomanjiSwitch />
         <ThemeSwitch />
         <NavbarMenuToggle />
       </NavbarContent>
 
       <NavbarMenu>
         <div className="mx-4 mt-2 flex flex-col gap-2">
-          {siteConfig.navMenuItems.map((item, index) => (
+          {siteConfig.navItemsMobile.map((item, index) => (
             <NavbarMenuItem key={index}>
               <Link
                 color="foreground"

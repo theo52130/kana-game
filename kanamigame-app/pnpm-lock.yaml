@@ -5725,7 +5725,7 @@ snapshots:
 
   '@react-stately/form@3.1.2(react@18.3.1)':
     dependencies:
-      '@react-types/shared': 3.29.0(react@18.3.1)
+      '@react-types/shared': 3.28.0(react@18.3.1)
       '@swc/helpers': 0.5.17
       react: 18.3.1
 
