@@ -1,40 +1,74 @@
-# Kana Game
+# 🎮 Kana Game
 
-## Description
-Kana Game est une application interactive conçue pour aider les utilisateurs à apprendre les caractères japonais (hiragana et katakana) de manière ludique. L'application propose des exercices, des quiz et des jeux pour renforcer l'apprentissage.
+## 🌟 Description
+**Kana Game** est une application interactive conçue pour aider les utilisateurs à apprendre les caractères japonais *(hiragana et katakana)* de manière ludique. 🎌  
+Cette application propose :
+- 🧩 **Des exercices**
+- ❓ **Des quiz**
+- 🎲 **Des mini-jeux**  
 
-## Structure du projet
-Le projet est organisé comme suit :
+L'objectif est de rendre l'apprentissage mémorable et amusant ! 🚀
 
-- **src/components** : Contient les composants réutilisables de l'interface utilisateur.
-- **src/assets** : Contient les ressources statiques telles que les images et les polices.
-- **src/styles** : Contient les fichiers de style pour l'application.
-- **src/app.js** : Point d'entrée de l'application, gère la logique principale et les routes.
-- **public/index.html** : Fichier HTML principal servant de point d'entrée pour l'application web.
-- **package.json** : Fichier de configuration pour npm, liste les dépendances et les scripts.
+---
 
-## Installation
-Pour installer les dépendances du projet, exécutez la commande suivante dans le répertoire du projet :
+## 🗂️ Structure du projet
+Voici comment le projet est organisé :
 
-```
+- **[`src/components`](./src/components)** : Contient les composants réutilisables de l'interface utilisateur.
+- **[`src/assets`](./src/assets)** : Contient les ressources statiques comme les images et les polices.
+- **[`src/styles`](./src/styles)** : Contient les fichiers CSS pour la mise en forme.
+- **[`src/app.js`](./src/app.js)** : Point d'entrée de l'application, où se trouve la logique principale.
+- **[`public/index.html`](./public/index.html)** : Fichier HTML principal pour l'application web.
+- **[`package.json`](./package.json)** : Fichier de configuration npm listant les dépendances et les scripts.
+
+---
+
+## ⚙️ Installation
+Pour installer les dépendances nécessaires au projet, exécutez la commande suivante dans le répertoire racine :
+
+```bash
 npm install
 ```
 
-## Démarrage
-Pour démarrer l'application en mode développement, utilisez la commande suivante :
+---
 
-```
+## 🚀 Démarrage
+Pour démarrer l'application en mode développement, exécutez :
+
+```bash
 npm start
 ```
 
-## Contribuer
-Les contributions sont les bienvenues ! Si vous souhaitez contribuer, veuillez suivre ces étapes :
+L'application sera disponible sur [http://localhost:3000](http://localhost:3000) 🌐.
 
-1. Fork le projet.
-2. Créez une nouvelle branche (`git checkout -b feature/YourFeature`).
-3. Apportez vos modifications et validez-les (`git commit -m 'Add some feature'`).
-4. Poussez la branche (`git push origin feature/YourFeature`).
-5. Ouvrez une Pull Request.
+---
 
-## License
-Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.
+## 🤝 Contribuer
+Les contributions sont les bienvenues ! 🛠️ Si vous souhaitez participer, suivez ces étapes simples :
+
+1. **Forkez** le projet (cliquez sur [Fork](https://github.com/theo52130/kanami-game/fork)).
+2. Créez une branche avec un nom pertinent :
+   ```bash
+   git checkout -b feature/YourFeature
+   ```
+3. Apportez vos modifications et validez-les :
+   ```bash
+   git commit -m "Ajout d'une nouvelle fonctionnalité"
+   ```
+4. Poussez la branche sur votre dépôt :
+   ```bash
+   git push origin feature/YourFeature
+   ```
+5. Ouvrez une **[Pull Request](https://github.com/theo52130/kanami-game/pulls)** et décrivez vos modifications. 🚀
+
+---
+
+## 📜 Licence
+Ce projet est sous licence **MIT**. Consultez le fichier [`LICENSE`](./LICENSE) pour plus de détails.
+
+---
+
+💡 **Astuce** : Si vous avez des questions ou des améliorations à proposer, n'hésitez pas à ouvrir une [issue](https://github.com/theo52130/kanami-game/issues) !
+
+---
+Made with ❤️ by [theo52130](https://github.com/theo52130)
