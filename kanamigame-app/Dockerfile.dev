@@ -17,14 +17,17 @@ RUN pnpm add -g nodemon
 # Copie des fichiers de dépendances uniquement (sans node_modules)
 COPY package.json pnpm-lock.yaml ./
 
+# Désactiver temporairement le script postinstall pour l'installation initiale
+RUN sed -i 's/"postinstall": "npx prisma generate"/"postinstall": "echo Skipping prisma generate during build"/g' package.json
+
 # Installation des dépendances
 RUN pnpm install --frozen-lockfile
 
+# Restaurer le script postinstall original
+RUN sed -i 's/"postinstall": "echo Skipping prisma generate during build"/"postinstall": "npx prisma generate"/g' package.json
+
 # Copie du reste du code source
 COPY . .
-
-# Génération du client Prisma
-RUN pnpm prisma generate
 
 # Exposition du port
 EXPOSE 3000
@@ -33,8 +36,5 @@ EXPOSE 3000
 ENV NODE_ENV=development
 ENV PORT=3000
 
-# Commande de démarrage avec nodemon pour auto-restart
-# CMD ["nodemon", "--watch", ".", "--ext", "js,jsx,ts,tsx,json", "--ignore", "node_modules", "--ignore", ".next", "--exec", "pnpm", "run", "dev"]
-
-# CMD ["pnpm", "run", "dev"]
-CMD ["pnpm", "run", "dev:docker"]
+# Commande de démarrage avec génération Prisma puis lancement du serveur
+CMD ["sh", "-c", "npx prisma generate && pnpm run dev:docker"]

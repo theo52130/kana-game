@@ -19,7 +19,7 @@ export async function GET() {
         error: "Erreur lors de la récupération des statistiques",
         details: process.env.NODE_ENV === 'development' ? String(error) : undefined
       },
-      { status: 200 } // Retourner 200 avec des valeurs par défaut pour ne pas casser le front
+      { status: 200 }
     );
   }
 }

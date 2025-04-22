@@ -9,9 +9,10 @@ services:
     volumes:
       - ./kanamigame-app:/app:cached
       - /app/node_modules
+      - ./prisma:/app/prisma:cached
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://kanami:kanamipassword@postgresql:5432/kanami_dev_db?schema=public
+      - DATABASE_URL=postgresql://kanagame_user_db:kanamipassword@postgresql:5432/kanami_dev_db?schema=public
     # command: pnpm run dev
     depends_on:
       - postgresql
@@ -22,7 +23,7 @@ services:
     container_name: postgresql-kanami-dev
     image: postgres:15-alpine
     environment:
-      - POSTGRES_USER=kanami
+      - POSTGRES_USER=kanagame_user_db
       - POSTGRES_PASSWORD=kanamipassword
       - POSTGRES_DB=kanami_dev_db
     ports:

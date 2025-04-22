@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
@@ -12,26 +9,26 @@ datasource db {
 }
 
 model User {
-  user_id          Int             @id @default(autoincrement())
-  username         String          @unique @db.VarChar(50)
-  email            String          @unique @db.VarChar(100)
-  password_hash    String          @db.VarChar(255)
-  created_at       DateTime        @default(now()) @db.Timestamp()
-  last_login       DateTime?       @db.Timestamp()
-  is_active        Boolean         @default(true)
-  profile_image    String?         @db.VarChar(255) // Nouvelle colonne
-  progress         UserProgress[]
-  sessionLogs      SessionLog[]
-  kanjiProgress    UserKanjiProgress[]
-  achievements     Achievement[]   // Relation vers la nouvelle table
+  user_id       Int                 @id @default(autoincrement())
+  username      String              @unique @db.VarChar(50)
+  email         String              @unique @db.VarChar(100)
+  password_hash String              @db.VarChar(255)
+  created_at    DateTime?           @default(now()) @db.Timestamp(6)
+  last_login    DateTime?           @db.Timestamp(6)
+  is_active     Boolean?            @default(true)
+  profile_image String?             @db.VarChar(255)
+  achievements  Achievement[]
+  sessionLogs   SessionLog[]
+  kanjiProgress UserKanjiProgress[]
+  progress      UserProgress[]
 
   @@map("users")
 }
 
 model KanaGroup {
-  group_id      Int      @id @default(autoincrement())
-  name          String   @db.VarChar(50)
-  description   String?  @db.Text
+  group_id      Int          @id @default(autoincrement())
+  name          String       @db.VarChar(50)
+  description   String?
   display_order Int
   is_hiragana   Boolean
   kanas         Kana[]
@@ -41,25 +38,25 @@ model KanaGroup {
 }
 
 model Kana {
-  kana_id       Int           @id @default(autoincrement())
-  character     String        @db.VarChar(10)
-  romaji        String        @db.VarChar(10)
+  kana_id       Int            @id @default(autoincrement())
+  character     String         @db.VarChar(10)
+  romaji        String         @db.VarChar(10)
   group_id      Int?
   display_order Int
-  group         KanaGroup?    @relation(fields: [group_id], references: [group_id])
   variants      KanaVariant[]
+  group         KanaGroup?     @relation(fields: [group_id], references: [group_id], onDelete: NoAction, onUpdate: NoAction)
   progress      UserProgress[]
 
   @@map("kanas")
 }
 
 model KanaVariant {
-  variant_id    Int     @id @default(autoincrement())
-  base_kana_id  Int?
-  character     String  @db.VarChar(10)
-  romaji        String  @db.VarChar(10)
-  variant_type  String  @db.VarChar(20)
-  base_kana     Kana?   @relation(fields: [base_kana_id], references: [kana_id])
+  variant_id   Int    @id @default(autoincrement())
+  base_kana_id Int?
+  character    String @db.VarChar(10)
+  romaji       String @db.VarChar(10)
+  variant_type String @db.VarChar(20)
+  base_kana    Kana?  @relation(fields: [base_kana_id], references: [kana_id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("kana_variants")
 }
@@ -67,27 +64,27 @@ model KanaVariant {
 model SessionLog {
   session_id      Int        @id @default(autoincrement())
   user_id         Int?
-  start_time      DateTime   @default(now()) @db.Timestamp()
-  end_time        DateTime?  @db.Timestamp()
+  start_time      DateTime?  @default(now()) @db.Timestamp(6)
+  end_time        DateTime?  @db.Timestamp(6)
   group_id        Int?
-  correct_answers Int        @default(0)
-  wrong_answers   Int        @default(0)
-  user            User?      @relation(fields: [user_id], references: [user_id])
-  group           KanaGroup? @relation(fields: [group_id], references: [group_id])
+  correct_answers Int?       @default(0)
+  wrong_answers   Int?       @default(0)
+  group           KanaGroup? @relation(fields: [group_id], references: [group_id], onDelete: NoAction, onUpdate: NoAction)
+  user            User?      @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("session_logs")
 }
 
 model UserProgress {
   progress_id     Int       @id @default(autoincrement())
-  user_id         Int
-  kana_id         Int
-  correct_count   Int       @default(0)
-  incorrect_count Int       @default(0)
-  last_practiced  DateTime? @db.Timestamp()
-  mastery_level   Int       @default(0)
-  user            User      @relation(fields: [user_id], references: [user_id])
-  kana            Kana      @relation(fields: [kana_id], references: [kana_id])
+  user_id         Int?
+  kana_id         Int?
+  correct_count   Int?      @default(0)
+  incorrect_count Int?      @default(0)
+  last_practiced  DateTime? @db.Timestamp(6)
+  mastery_level   Int?      @default(0)
+  kana            Kana?     @relation(fields: [kana_id], references: [kana_id], onDelete: NoAction, onUpdate: NoAction)
+  user            User?     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("user_progress")
 }
@@ -95,7 +92,7 @@ model UserProgress {
 model KanjiLevel {
   level_id      Int     @id @default(autoincrement())
   name          String  @db.VarChar(20)
-  description   String? @db.Text
+  description   String?
   display_order Int
   kanjis        Kanji[]
 
@@ -103,17 +100,17 @@ model KanjiLevel {
 }
 
 model Kanji {
-  kanji_id      Int               @id @default(autoincrement())
-  character     String            @db.VarChar(10)
-  level_id      Int?
-  strokes       Int
-  jlpt_level    Int?
-  school_grade  Int?
-  level         KanjiLevel?       @relation(fields: [level_id], references: [level_id])
-  readings      KanjiReading[]
-  meanings      KanjiMeaning[]
-  examples      KanjiExample[]
-  progress      UserKanjiProgress[]
+  kanji_id     Int                 @id @default(autoincrement())
+  character    String              @db.VarChar(10)
+  level_id     Int?
+  strokes      Int
+  jlpt_level   Int?
+  school_grade Int?
+  examples     KanjiExample[]
+  meanings     KanjiMeaning[]
+  readings     KanjiReading[]
+  level        KanjiLevel?         @relation(fields: [level_id], references: [level_id], onDelete: NoAction, onUpdate: NoAction)
+  progress     UserKanjiProgress[]
 
   @@map("kanjis")
 }
@@ -123,8 +120,8 @@ model KanjiReading {
   kanji_id     Int?
   reading      String   @db.VarChar(50)
   reading_type String   @db.VarChar(10)
-  is_common    Boolean  @default(true)
-  kanji        Kanji?   @relation(fields: [kanji_id], references: [kanji_id])
+  is_common    Boolean? @default(true)
+  kanji        Kanji?   @relation(fields: [kanji_id], references: [kanji_id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("kanji_readings")
 }
@@ -133,9 +130,9 @@ model KanjiMeaning {
   meaning_id    Int      @id @default(autoincrement())
   kanji_id      Int?
   meaning       String   @db.VarChar(100)
-  language_code String   @default("fr") @db.VarChar(5)
-  is_primary    Boolean  @default(false)
-  kanji         Kanji?   @relation(fields: [kanji_id], references: [kanji_id])
+  language_code String?  @default("fr") @db.VarChar(5)
+  is_primary    Boolean? @default(false)
+  kanji         Kanji?   @relation(fields: [kanji_id], references: [kanji_id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("kanji_meanings")
 }
@@ -146,21 +143,22 @@ model KanjiExample {
   word          String  @db.VarChar(50)
   reading       String  @db.VarChar(50)
   meaning       String? @db.VarChar(100)
-  kanji         Kanji?  @relation(fields: [kanji_id], references: [kanji_id])
+  language_code String? @default("fr") @db.VarChar(5)
+  kanji         Kanji?  @relation(fields: [kanji_id], references: [kanji_id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("kanji_examples")
 }
 
 model UserKanjiProgress {
   progress_id     Int       @id @default(autoincrement())
-  user_id         Int
-  kanji_id        Int
-  correct_count   Int       @default(0)
-  incorrect_count Int       @default(0)
-  last_practiced  DateTime? @db.Timestamp()
-  mastery_level   Int       @default(0)
-  user            User      @relation(fields: [user_id], references: [user_id])
-  kanji           Kanji     @relation(fields: [kanji_id], references: [kanji_id])
+  user_id         Int?
+  kanji_id        Int?
+  correct_count   Int?      @default(0)
+  incorrect_count Int?      @default(0)
+  last_practiced  DateTime? @db.Timestamp(6)
+  mastery_level   Int?      @default(0)
+  kanji           Kanji?    @relation(fields: [kanji_id], references: [kanji_id], onDelete: NoAction, onUpdate: NoAction)
+  user            User?     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("user_kanji_progress")
 }
@@ -168,11 +166,11 @@ model UserKanjiProgress {
 model Achievement {
   achievement_id Int       @id @default(autoincrement())
   title          String    @db.VarChar(50)
-  description    String    @db.Text
+  description    String
   icon           String?   @db.VarChar(100)
-  created_at     DateTime  @default(now()) @db.Timestamp()
-  user_id        Int
-  user           User      @relation(fields: [user_id], references: [user_id])
-  
+  created_at     DateTime? @default(now()) @db.Timestamp(6)
+  user_id        Int?
+  user           User?     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+
   @@map("achievements")
 }

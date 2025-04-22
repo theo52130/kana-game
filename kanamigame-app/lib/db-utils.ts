@@ -3,23 +3,39 @@ import { prisma } from './prisma';
 // Récupération des statistiques
 export async function getStatistiques() {
   try {
-    // Nombre d'utilisateurs actifs
-    const utilisateurs = await prisma.user.count({
-      where: { is_active: true }
-    });
+    let utilisateurs = 0;
+    let caracteres = 0;
+    let niveaux = 0;
     
-    // Nombre total de caractères (kanas + variants)
-    const nombreKanas = await prisma.kana.count();
-    const nombreVariants = await prisma.kanaVariant.count();
-    const caracteres = nombreKanas + nombreVariants;
+    try {
+      // Nombre d'utilisateurs actifs
+      utilisateurs = await prisma.user.count({
+        where: { is_active: true }
+      });
+    } catch (e) {
+      console.error("Erreur lors du comptage des utilisateurs:", e);
+    }
     
-    // Nombre de niveaux
-    const niveaux = await prisma.kanaGroup.count();
+    try {
+      // Nombre total de caractères (kanas + variants)
+      const nombreKanas = await prisma.kana.count();
+      const nombreVariants = await prisma.kanaVariant.count();
+      caracteres = nombreKanas + nombreVariants;
+    } catch (e) {
+      console.error("Erreur lors du comptage des caractères:", e);
+    }
+    
+    try {
+      // Nombre de niveaux
+      niveaux = await prisma.kanaGroup.count();
+    } catch (e) {
+      console.error("Erreur lors du comptage des niveaux:", e);
+    }
     
     return { utilisateurs, caracteres, niveaux };
   } catch (error) {
     console.error("Erreur lors de la récupération des statistiques:", error);
-    throw error;
+    return { utilisateurs: 0, caracteres: 0, niveaux: 0 };
   }
 }
 

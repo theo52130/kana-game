@@ -15,10 +15,6 @@ export const siteConfig = {
     {
       label: "bdd",
       href: "/bdd",
-    },
-    {
-      label: "learn",
-      href: "/learn",
     }
   ],
   navItemsMobile: [

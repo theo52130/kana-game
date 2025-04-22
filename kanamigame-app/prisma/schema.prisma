@@ -4,6 +4,7 @@
 generator client {
   provider = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+  output   = "./node_modules/@kanamigame/prisma-client"
 }
 
 datasource db {
@@ -19,19 +20,20 @@ model User {
   created_at       DateTime        @default(now()) @db.Timestamp()
   last_login       DateTime?       @db.Timestamp()
   is_active        Boolean         @default(true)
-  profile_image    String?         @db.VarChar(255) // Nouvelle colonne
+  profile_image    String?         @db.VarChar(255)
   progress         UserProgress[]
   sessionLogs      SessionLog[]
   kanjiProgress    UserKanjiProgress[]
-  achievements     Achievement[]   // Relation vers la nouvelle table
+  achievements     Achievement[]
 
   @@map("users")
+  @@index([user_id], name: "idx_users_id")
 }
 
 model KanaGroup {
-  group_id      Int      @id @default(autoincrement())
-  name          String   @db.VarChar(50)
-  description   String?  @db.Text
+  group_id      Int         @id @default(autoincrement())
+  name          String      @db.VarChar(50)
+  description   String?     @db.Text
   display_order Int
   is_hiragana   Boolean
   kanas         Kana[]
@@ -51,6 +53,7 @@ model Kana {
   progress      UserProgress[]
 
   @@map("kanas")
+  @@index([group_id], name: "idx_kanas_group_id")
 }
 
 model KanaVariant {
@@ -58,10 +61,11 @@ model KanaVariant {
   base_kana_id  Int?
   character     String  @db.VarChar(10)
   romaji        String  @db.VarChar(10)
-  variant_type  String  @db.VarChar(20)
+  variant_type  String  @db.VarChar(20) // ex: 'dakuten', 'handakuten', 'yoon', 'dakuten-yoon', 'handakuten-yoon', 'foreign', 'foreign-combo'
   base_kana     Kana?   @relation(fields: [base_kana_id], references: [kana_id])
 
   @@map("kana_variants")
+  @@index([base_kana_id], name: "idx_variants_base_kana_id")
 }
 
 model SessionLog {
@@ -76,8 +80,10 @@ model SessionLog {
   group           KanaGroup? @relation(fields: [group_id], references: [group_id])
 
   @@map("session_logs")
+  @@index([user_id], name: "idx_session_logs_user_id")
 }
 
+// Modifiez temporairement le modèle pour forcer la régénération
 model UserProgress {
   progress_id     Int       @id @default(autoincrement())
   user_id         Int
@@ -90,6 +96,8 @@ model UserProgress {
   kana            Kana      @relation(fields: [kana_id], references: [kana_id])
 
   @@map("user_progress")
+  @@index([user_id], name: "idx_user_progress_user_id")
+  @@index([kana_id], name: "idx_user_progress_kana_id")
 }
 
 model KanjiLevel {
@@ -122,7 +130,7 @@ model KanjiReading {
   reading_id   Int      @id @default(autoincrement())
   kanji_id     Int?
   reading      String   @db.VarChar(50)
-  reading_type String   @db.VarChar(10)
+  reading_type String   @db.VarChar(10) // 'onyomi' ou 'kunyomi'
   is_common    Boolean  @default(true)
   kanji        Kanji?   @relation(fields: [kanji_id], references: [kanji_id])
 
@@ -175,4 +183,5 @@ model Achievement {
   user           User      @relation(fields: [user_id], references: [user_id])
   
   @@map("achievements")
+  @@index([user_id], name: "idx_achievements_user_id")
 }

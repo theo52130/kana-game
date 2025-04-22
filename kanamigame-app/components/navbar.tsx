@@ -11,19 +11,18 @@ import {
 } from "@heroui/navbar";
 import { Button } from "@heroui/button";
 import { Link } from "@heroui/link";
+import {Select, SelectSection, SelectItem} from "@heroui/select";
 import { DiscordIcon, Logo, GithubIcon } from "@/components/icons";
 import NextLink from "next/link";
 import { useState } from "react";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { KanaRomanjiSwitch } from "@/components/kana-romanji-switch";
+import { KanaRomanjiSwitch } from "@/components/language-select";
 
 export const Navbar = () => {
-  // Ajouter un état pour gérer l'ouverture/fermeture du menu
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Fonction pour fermer le menu
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
@@ -44,7 +43,7 @@ export const Navbar = () => {
             onClick={closeMenu}
           >
             {/* <Logo size={40} /> */}
-            <p className="font-bold text-secondary-600">
+            <p className="font-bold text-red-700 dark:text-red-500 text-2xl">
               {siteConfig.mainNav.title}
             </p>
           </NextLink>
@@ -80,8 +79,8 @@ export const Navbar = () => {
           </Link>
           <KanaRomanjiSwitch />
           <ThemeSwitch />
-          <Button size="md" radius="full" color="secondary">
-            LogIn
+          <Button size="md" radius="full" className="font-bold text-red-700 dark:text-red-500">
+            Login
           </Button>
         </NavbarItem>
       </NavbarContent>

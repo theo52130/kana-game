@@ -312,6 +312,21 @@ INSERT INTO kanas (character, romaji, group_id, display_order) VALUES
 INSERT INTO kanas (character, romaji, group_id, display_order) VALUES
 ('ン', 'n', 22, 1);
 
+-- Petits kana spéciaux hiragana
+INSERT INTO kanas (character, romaji, group_id, display_order) VALUES
+('っ', 'small tsu', 11, 2),  -- Petit tsu (gémination)
+('ゃ', 'small ya', 11, 3),   -- Petit ya
+('ゅ', 'small yu', 11, 4),   -- Petit yu
+('ょ', 'small yo', 11, 5);   -- Petit yo
+
+-- Ajout des petits kana supplémentaires hiragana pour correspondre aux katakana
+INSERT INTO kanas (character, romaji, group_id, display_order) VALUES
+('ぁ', 'small a', 11, 6),   -- Petit a
+('ぃ', 'small i', 11, 7),   -- Petit i
+('ぅ', 'small u', 11, 8),   -- Petit u
+('ぇ', 'small e', 11, 9),   -- Petit e
+('ぉ', 'small o', 11, 10);  -- Petit o
+
 -- Insertion des variantes dakuten (sons vocalisés)
 INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
 (6, 'が', 'ga', 'dakuten'),  -- か → が
@@ -334,6 +349,89 @@ INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
 (28, 'ぶ', 'bu', 'dakuten'), -- ふ → ぶ
 (29, 'べ', 'be', 'dakuten'), -- へ → べ
 (30, 'ぼ', 'bo', 'dakuten'); -- ほ → ぼ
+
+-- Variantes handakuten pour hiragana
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'は'), 'ぱ', 'pa', 'handakuten'),
+((SELECT kana_id FROM kanas WHERE character = 'ひ'), 'ぴ', 'pi', 'handakuten'),
+((SELECT kana_id FROM kanas WHERE character = 'ふ'), 'ぷ', 'pu', 'handakuten'),
+((SELECT kana_id FROM kanas WHERE character = 'へ'), 'ぺ', 'pe', 'handakuten'),
+((SELECT kana_id FROM kanas WHERE character = 'ほ'), 'ぽ', 'po', 'handakuten');
+
+-- Variantes handakuten pour katakana
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'ハ'), 'パ', 'pa', 'handakuten'),
+((SELECT kana_id FROM kanas WHERE character = 'ヒ'), 'ピ', 'pi', 'handakuten'),
+((SELECT kana_id FROM kanas WHERE character = 'フ'), 'プ', 'pu', 'handakuten'),
+((SELECT kana_id FROM kanas WHERE character = 'ヘ'), 'ペ', 'pe', 'handakuten'),
+((SELECT kana_id FROM kanas WHERE character = 'ホ'), 'ポ', 'po', 'handakuten');
+
+-- Combinaisons yoon pour les hiragana
+-- KI + small Y
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'き'), 'きゃ', 'kya', 'yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'き'), 'きゅ', 'kyu', 'yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'き'), 'きょ', 'kyo', 'yoon');
+
+-- SHI + small Y
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'し'), 'しゃ', 'sha', 'yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'し'), 'しゅ', 'shu', 'yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'し'), 'しょ', 'sho', 'yoon');
+
+-- CHI + small Y
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'ち'), 'ちゃ', 'cha', 'yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ち'), 'ちゅ', 'chu', 'yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ち'), 'ちょ', 'cho', 'yoon');
+
+-- NI + small Y
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'に'), 'にゃ', 'nya', 'yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'に'), 'にゅ', 'nyu', 'yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'に'), 'にょ', 'nyo', 'yoon');
+
+-- HI + small Y
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'ひ'), 'ひゃ', 'hya', 'yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ひ'), 'ひゅ', 'hyu', 'yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ひ'), 'ひょ', 'hyo', 'yoon');
+
+-- MI + small Y
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'み'), 'みゃ', 'mya', 'yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'み'), 'みゅ', 'myu', 'yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'み'), 'みょ', 'myo', 'yoon');
+
+-- RI + small Y
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'り'), 'りゃ', 'rya', 'yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'り'), 'りゅ', 'ryu', 'yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'り'), 'りょ', 'ryo', 'yoon');
+
+-- GI + small Y (dakuten-yoon)
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'ぎ'), 'ぎゃ', 'gya', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ぎ'), 'ぎゅ', 'gyu', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ぎ'), 'ぎょ', 'gyo', 'dakuten-yoon');
+
+-- JI + small Y (dakuten-yoon)
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'じ'), 'じゃ', 'ja', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'じ'), 'じゅ', 'ju', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'じ'), 'じょ', 'jo', 'dakuten-yoon');
+
+-- BI + small Y (dakuten-yoon)
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'び'), 'びゃ', 'bya', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'び'), 'びゅ', 'byu', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'び'), 'びょ', 'byo', 'dakuten-yoon');
+
+-- PI + small Y (handakuten-yoon)
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'ぴ'), 'ぴゃ', 'pya', 'handakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ぴ'), 'ぴゅ', 'pyu', 'handakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ぴ'), 'ぴょ', 'pyo', 'handakuten-yoon');
 
 -- Récupération des IDs des katakana pour les variantes
 -- Groupe K (Voyelles + 1)
@@ -375,14 +473,6 @@ INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
 ((SELECT kana_id FROM kanas WHERE character = 'フ'), 'プ', 'pu', 'handakuten'),
 ((SELECT kana_id FROM kanas WHERE character = 'ヘ'), 'ペ', 'pe', 'handakuten'),
 ((SELECT kana_id FROM kanas WHERE character = 'ホ'), 'ポ', 'po', 'handakuten');
-
--- Insertion des variantes handakuten (sons semi-vocalisés)
-INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
-(26, 'ぱ', 'pa', 'handakuten'), -- は → ぱ
-(27, 'ぴ', 'pi', 'handakuten'), -- ひ → ぴ
-(28, 'ぷ', 'pu', 'handakuten'), -- ふ → ぷ
-(29, 'ぺ', 'pe', 'handakuten'), -- へ → ぺ
-(30, 'ぽ', 'po', 'handakuten'); -- ほ → ぽ
 
 -- Combinaisons yoon pour les katakana
 -- KI + small Y
@@ -429,27 +519,27 @@ INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
 
 -- GI + small Y (dakuten-yoon)
 INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
-((SELECT kana_id FROM kanas WHERE character = 'キ'), 'ギャ', 'gya', 'dakuten-yoon'),
-((SELECT kana_id FROM kanas WHERE character = 'キ'), 'ギュ', 'gyu', 'dakuten-yoon'),
-((SELECT kana_id FROM kanas WHERE character = 'キ'), 'ギョ', 'gyo', 'dakuten-yoon');
+((SELECT kana_id FROM kanas WHERE character = 'ギ'), 'ギャ', 'gya', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ギ'), 'ギュ', 'gyu', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ギ'), 'ギョ', 'gyo', 'dakuten-yoon');
 
 -- JI + small Y (dakuten-yoon)
 INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
-((SELECT kana_id FROM kanas WHERE character = 'シ'), 'ジャ', 'ja', 'dakuten-yoon'),
-((SELECT kana_id FROM kanas WHERE character = 'シ'), 'ジュ', 'ju', 'dakuten-yoon'),
-((SELECT kana_id FROM kanas WHERE character = 'シ'), 'ジョ', 'jo', 'dakuten-yoon');
+((SELECT kana_id FROM kanas WHERE character = 'ジ'), 'ジャ', 'ja', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ジ'), 'ジュ', 'ju', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ジ'), 'ジョ', 'jo', 'dakuten-yoon');
 
 -- BI + small Y (dakuten-yoon)
 INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
-((SELECT kana_id FROM kanas WHERE character = 'ヒ'), 'ビャ', 'bya', 'dakuten-yoon'),
-((SELECT kana_id FROM kanas WHERE character = 'ヒ'), 'ビュ', 'byu', 'dakuten-yoon'),
-((SELECT kana_id FROM kanas WHERE character = 'ヒ'), 'ビョ', 'byo', 'dakuten-yoon');
+((SELECT kana_id FROM kanas WHERE character = 'ビ'), 'ビャ', 'bya', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ビ'), 'ビュ', 'byu', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ビ'), 'ビョ', 'byo', 'dakuten-yoon');
 
 -- PI + small Y (handakuten-yoon)
 INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
-((SELECT kana_id FROM kanas WHERE character = 'ヒ'), 'ピャ', 'pya', 'handakuten-yoon'),
-((SELECT kana_id FROM kanas WHERE character = 'ヒ'), 'ピュ', 'pyu', 'handakuten-yoon'),
-((SELECT kana_id FROM kanas WHERE character = 'ヒ'), 'ピョ', 'pyo', 'handakuten-yoon');
+((SELECT kana_id FROM kanas WHERE character = 'ピ'), 'ピャ', 'pya', 'handakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ピ'), 'ピュ', 'pyu', 'handakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ピ'), 'ピョ', 'pyo', 'handakuten-yoon');
 
 -- Katakana spéciaux (sons étrangers)
 INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
@@ -474,6 +564,46 @@ INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
 ((SELECT kana_id FROM kanas WHERE character = 'チ'), 'チェ', 'che', 'foreign-combo'),
 ((SELECT kana_id FROM kanas WHERE character = 'シ'), 'シェ', 'she', 'foreign-combo'),
 ((SELECT kana_id FROM kanas WHERE character = 'ジ'), 'ジェ', 'je', 'foreign-combo');
+
+-- Hiragana pour sons spéciaux/étrangers (moins communs mais parfois utilisés)
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'う'), 'ゔ', 'vu', 'foreign'),
+((SELECT kana_id FROM kanas WHERE character = 'ふ'), 'ふぁ', 'fa', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'ふ'), 'ふぃ', 'fi', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'ふ'), 'ふぇ', 'fe', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'ふ'), 'ふぉ', 'fo', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'て'), 'てぃ', 'ti', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'と'), 'とぅ', 'tu', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'で'), 'でぃ', 'di', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'ど'), 'どぅ', 'du', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'う'), 'うぃ', 'wi', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'う'), 'うぇ', 'we', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'う'), 'うぉ', 'wo', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'ち'), 'ちぇ', 'che', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'し'), 'しぇ', 'she', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'じ'), 'じぇ', 'je', 'foreign-combo');
+
+-- Pour assurer la complétude, ajout des combinaisons spéciales avec les dakuten-yoon en katakana
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'ギ'), 'ギャ', 'gya', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ギ'), 'ギュ', 'gyu', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ギ'), 'ギョ', 'gyo', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ジ'), 'ジャ', 'ja', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ジ'), 'ジュ', 'ju', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ジ'), 'ジョ', 'jo', 'dakuten-yoon');
+
+-- Ajout de versions spécifiques bizarres ou rares (optionnel)
+INSERT INTO kana_variants (base_kana_id, character, romaji, variant_type) VALUES
+((SELECT kana_id FROM kanas WHERE character = 'ヂ'), 'ヂャ', 'dya', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ヂ'), 'ヂュ', 'dyu', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ヂ'), 'ヂョ', 'dyo', 'dakuten-yoon'),
+((SELECT kana_id FROM kanas WHERE character = 'ウ'), 'ウァ', 'wa', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'ク'), 'クァ', 'kwa', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'グ'), 'グァ', 'gwa', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'ツ'), 'ツァ', 'tsa', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'ツ'), 'ツィ', 'tsi', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'ツ'), 'ツェ', 'tse', 'foreign-combo'),
+((SELECT kana_id FROM kanas WHERE character = 'ツ'), 'ツォ', 'tso', 'foreign-combo');
 
 -- Signe spéciaux katakana
 INSERT INTO kanas (character, romaji, group_id, display_order) VALUES

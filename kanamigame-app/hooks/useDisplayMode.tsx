@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-type DisplayMode = "romanji" | "kana";
+type DisplayMode = "romanji" | "japonais" | "english";
 
 type DisplayModeContextType = {
   mode: DisplayMode;
@@ -13,12 +13,12 @@ type DisplayModeContextType = {
 const DisplayModeContext = createContext<DisplayModeContextType | undefined>(undefined);
 
 export function DisplayModeProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = useState<DisplayMode>("romanji");
+  const [mode, setMode] = useState<DisplayMode>("english");
 
   // Charger la préférence depuis localStorage lors du montage
   useEffect(() => {
     const savedMode = localStorage.getItem("display-mode");
-    if (savedMode && (savedMode === "kana" || savedMode === "romanji")) {
+    if (savedMode && (savedMode === "japonais" || savedMode === "romanji" || savedMode === "english")) {
       setMode(savedMode);
     }
   }, []);
@@ -29,7 +29,12 @@ export function DisplayModeProvider({ children }: { children: React.ReactNode })
   }, [mode]);
 
   const toggleMode = () => {
-    setMode(mode === "kana" ? "romanji" : "kana");
+    setMode(prevMode => {
+      if (prevMode === "japonais") return "english";
+      if (prevMode === "english") return "romanji";
+      if (prevMode === "romanji") return "japonais";
+      return "japonais";
+    });
   };
 
   return (
